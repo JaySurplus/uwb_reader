@@ -10,7 +10,7 @@ DEFAULT_PARITY = 'N'
 
 
 class UWB(object):
-    def __init__(self, port, buadrate=DEFAULT_BAUDRATE, bytesize=DEFAULT_BYTESIZE,
+    def __init__(self, port,frame_type='node_frame_2', buadrate=DEFAULT_BAUDRATE, bytesize=DEFAULT_BYTESIZE,
                 stopbits=DEFAULT_STOPBITS):
         def __serialthread():
             while self.serialthread_alive:
@@ -19,6 +19,7 @@ class UWB(object):
                     data = self.serial.read(self.serial.in_waiting)
                     
                     self.binbuffer.extend(data)
+                    print(len(self.binbuffer))
                 else:
                     pass
         
@@ -34,8 +35,8 @@ class UWB(object):
     
     def get_data(self, timeout=None):
 
-        data = self.binbuffer.pop()
-        #data = self.module_data_fifo.get(block=True, timeout=timeout)
+        #data = self.binbuffer.pop()
+        data = self.module_data_fifo.get(block=True, timeout=timeout)
         return data
 
     def get_data_size(self):
@@ -50,7 +51,7 @@ def main():
     port = '/dev/tty.SLAB_USBtoUART'
     uwb = UWB(port)
     while True:
-        print(uwb.get_data())
+        pass
     uwb.close()
 
 
